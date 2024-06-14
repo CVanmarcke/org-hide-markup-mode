@@ -1,0 +1,57 @@
+#+title: Org hide markup mode
+#+author: Cvanmarcke
+
+This is a minor mode to reduce clutter and improve the viewing experience in emacs' org-mode.
+
+This package hides keywords and property drawers, and shortens org-cite citations.
+
+* Screenshot
+
+* Installation
+** Elpaca
+#+begin_src emacs-lisp
+  (use-package org-hide-markup-mode
+    :ensure (:host github :repo "cvanmarcke/org-hide-markup-mode")
+    :hook (org-mode . org-hide-markup-mode)
+    :config
+    (setopt org-hide-markup-hide-keywords t
+            org-hide-markup-shorten-citations t
+            org-hide-markup-hide-property-drawer t
+            org-hide-markup-toggle-links t))
+#+end_src
+
+** package.el
+#+begin_src emacs-lisp
+  (use-package org-hide-markup-mode
+    :init
+    (unless (package-installed-p 'org-hide-markup-mode)
+      (package-vc-install "https://github.com/cvanmarcke/org-hide-markup-mode"))
+    :hook (org-mode . org-hide-markup-mode)
+    :config
+    (setopt org-hide-markup-hide-keywords t
+            org-hide-markup-shorten-citations t
+            org-hide-markup-hide-property-drawer t
+            org-hide-markup-toggle-links t))
+#+end_src
+
+* Usage
+** Shortening citations
+Citations are automatically shortened, but this can be disabled by setting =org-hide-markup-shorten-citations= to =nil=.
+
+For example, the citation =[cite:@authorTitleInCamelCase2024;@otherauthorTitleInCamelCase2023;@anotherauthorTitleInCamelCase2023]= will be shortened to =[@author;@otherauthor;@anotherauthor]=. Note that this is only visually: the citation will work the same as before under the hood.
+
+The way the citations are shortened can be modified by changing the variable =org-hide-markup-mode-font-lock-keyword-list=, =org-shorten-citations-re= and =org-shorten-long-citations-re=.
+** Hiding keywords
+Keywords are automatically hidden, but this can be disabled by setting =org-hide-markup-hide-keywords= to =nil=.
+
+Which keywords are hidden is defined by =org-hide-markup-keywords-re=.
+
+** Hiding property drawers
+Property drawers automatically hidden, but this can be disabled by setting =org-hide-markup-hide-property-drawers= to =nil=.
+
+** Toggle descriptive links
+By default, whenever org-hide-markup-mode is enabled, links are displayed descriptively (see the built-in variable =org-link-descriptive=).
+
+When =org-hide-markup-mode= is toggled from enabled to disabled, the full path of links will be shown so they can be edited. When the mode is enabled again, the links are displayed descriptively again.
+
+This function can be disabled by setting =org-hide-markup-toggle-links= to =nil=.
